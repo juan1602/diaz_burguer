@@ -12,6 +12,7 @@ export const menu = [
         descripcion:
           "Carne ahumada, queso mozzarella, vegetales frescos, pan brioche sellado en mantequilla, acompañada de papas francesas.",
         precio: 16000,
+        destacado: true,
       },
       {
         id: "new-york-burger",
@@ -26,6 +27,7 @@ export const menu = [
         descripcion:
           "Carne ahumada, queso mozzarella, tocineta, queso costeño asado, maduro frito, cebolla grille, tomate y pan brioche sellado en mantequilla, acompañada de papas francesas.",
         precio: 20000,
+        destacado: true,
       },
       {
         id: "mixta",
@@ -54,6 +56,7 @@ export const menu = [
         descripcion:
           "Carne ahumada, queso mozzarella, tocineta, pollo desmechado bañado en salsa tártara, vegetales frescos, pan brioche sellado en mantequilla, acompañada de papas francesas.",
         precio: 22000,
+        destacado: true,
       },
       {
         id: "doble-piso",
@@ -219,3 +222,9 @@ export const menu = [
     ],
   },
 ];
+
+export function getProductosDestacados() {
+  return menu.flatMap((categoria) =>
+    categoria.productos.filter((producto) => producto.destacado),
+  );
+}

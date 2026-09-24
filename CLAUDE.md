@@ -13,7 +13,7 @@ Los clientes entran casi siempre desde el celular (link de Instagram o QR en las
 4. Pedidos en línea conectados al sistema del restaurante.
 
 ## Stack
-- Frontend: React + Vite, CSS propio (sin librerías de UI).
+- Frontend: React + Vite, estilos con Tailwind CSS (colores de marca negro/rojo definidos como tema).
 - Backend (fase 2): Spring Boot + PostgreSQL.
 
 ## Reglas
