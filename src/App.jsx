@@ -1,18 +1,23 @@
-import { StickyHeader } from "./components/StickyHeader";
-import { Hero } from "./components/Hero";
-import { PlatosDestacados } from "./components/PlatosDestacados";
-import { Menu } from "./components/Menu";
-import { Contacto } from "./components/Contacto";
+import { Route, Routes } from "react-router-dom";
+import { SitioPublico } from "./paginas/SitioPublico";
+import { AdminLogin } from "./paginas/AdminLogin";
+import { AdminPanel } from "./paginas/AdminPanel";
+import { RutaProtegida } from "./paginas/RutaProtegida";
 
 function App() {
   return (
-    <div className="min-h-screen bg-negro">
-      <StickyHeader />
-      <Hero />
-      <PlatosDestacados />
-      <Menu />
-      <Contacto />
-    </div>
+    <Routes>
+      <Route path="/" element={<SitioPublico />} />
+      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route
+        path="/admin"
+        element={
+          <RutaProtegida>
+            <AdminPanel />
+          </RutaProtegida>
+        }
+      />
+    </Routes>
   );
 }
 

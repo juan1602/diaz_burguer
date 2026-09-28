@@ -1,8 +1,16 @@
-import { getProductosDestacados } from "../data/menu";
 import { formatPrecio } from "../utils/formatPrecio";
+import { obtenerIconoCategoria } from "../utils/categoriaIconos";
 
-export function PlatosDestacados() {
-  const destacados = getProductosDestacados();
+export function PlatosDestacados({ categorias, cargando }) {
+  const destacados = categorias.flatMap((categoria) =>
+    categoria.productos
+      .filter((producto) => producto.destacado)
+      .map((producto) => ({ ...producto, categoriaNombre: categoria.nombre })),
+  );
+
+  if (cargando || destacados.length === 0) {
+    return null;
+  }
 
   return (
     <section className="mx-auto max-w-5xl px-4 py-14 text-center">
@@ -16,17 +24,30 @@ export function PlatosDestacados() {
         {destacados.map((producto) => (
           <article
             key={producto.id}
-            className="rounded-2xl bg-negro-suave p-6 text-left ring-1 ring-negro-borde"
+            className="overflow-hidden rounded-2xl bg-negro-suave text-left ring-1 ring-negro-borde"
           >
-            <h3 className="font-display text-2xl text-white uppercase">
-              {producto.nombre}
-            </h3>
-            <p className="mt-2 text-sm leading-snug text-gray-400">
-              {producto.descripcion}
-            </p>
-            <p className="mt-4 text-xl font-bold text-rojo">
-              {formatPrecio(producto.precio)}
-            </p>
+            {producto.imagenUrl ? (
+              <img
+                src={producto.imagenUrl}
+                alt={producto.nombre}
+                className="aspect-video w-full object-cover"
+              />
+            ) : (
+              <div className="flex aspect-video items-center justify-center bg-gradient-to-br from-rojo/30 to-negro-suave text-4xl">
+                {obtenerIconoCategoria(producto.categoriaNombre)}
+              </div>
+            )}
+            <div className="p-6">
+              <h3 className="font-display text-2xl text-white uppercase">
+                {producto.nombre}
+              </h3>
+              <p className="mt-2 text-sm leading-snug text-gray-400">
+                {producto.descripcion}
+              </p>
+              <p className="mt-4 text-xl font-bold text-rojo">
+                {formatPrecio(producto.precio)}
+              </p>
+            </div>
           </article>
         ))}
       </div>
