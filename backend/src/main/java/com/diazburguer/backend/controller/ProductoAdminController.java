@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/productos")
@@ -59,6 +62,39 @@ public class ProductoAdminController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado");
         }
         productoRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/mover")
+    public ResponseEntity<Void> mover(@PathVariable Long id, @RequestParam String direccion) {
+        Producto producto = productoRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado"));
+
+        List<Producto> hermanos = productoRepository.findByCategoriaIdOrderByOrdenAsc(
+            producto.getCategoria().getId()
+        );
+
+        int indice = -1;
+        for (int i = 0; i < hermanos.size(); i++) {
+            if (hermanos.get(i).getId().equals(id)) {
+                indice = i;
+                break;
+            }
+        }
+
+        int indiceVecino = "arriba".equals(direccion) ? indice - 1 : indice + 1;
+        if (indiceVecino < 0 || indiceVecino >= hermanos.size()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        Producto vecino = hermanos.get(indiceVecino);
+        Integer ordenTemporal = producto.getOrden();
+        producto.setOrden(vecino.getOrden());
+        vecino.setOrden(ordenTemporal);
+
+        productoRepository.save(producto);
+        productoRepository.save(vecino);
+
         return ResponseEntity.noContent().build();
     }
 

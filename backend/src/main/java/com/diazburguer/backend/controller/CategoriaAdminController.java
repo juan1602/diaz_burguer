@@ -6,14 +6,18 @@ import com.diazburguer.backend.repository.CategoriaRepository;
 import com.diazburguer.backend.util.Textos;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/categorias")
@@ -53,6 +57,38 @@ public class CategoriaAdminController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoría no encontrada");
         }
         categoriaRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/mover")
+    public ResponseEntity<Void> mover(@PathVariable Long id, @RequestParam String direccion) {
+        List<Categoria> todas = categoriaRepository.findAll(Sort.by("orden"));
+
+        int indice = -1;
+        for (int i = 0; i < todas.size(); i++) {
+            if (todas.get(i).getId().equals(id)) {
+                indice = i;
+                break;
+            }
+        }
+        if (indice == -1) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoría no encontrada");
+        }
+
+        int indiceVecino = "arriba".equals(direccion) ? indice - 1 : indice + 1;
+        if (indiceVecino < 0 || indiceVecino >= todas.size()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        Categoria categoria = todas.get(indice);
+        Categoria vecina = todas.get(indiceVecino);
+        Integer ordenTemporal = categoria.getOrden();
+        categoria.setOrden(vecina.getOrden());
+        vecina.setOrden(ordenTemporal);
+
+        categoriaRepository.save(categoria);
+        categoriaRepository.save(vecina);
+
         return ResponseEntity.noContent().build();
     }
 

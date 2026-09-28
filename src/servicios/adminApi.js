@@ -37,6 +37,12 @@ export function eliminarCategoria(id) {
   return solicitud(`/api/admin/categorias/${id}`, { method: "DELETE" });
 }
 
+export function moverCategoria(id, direccion) {
+  return solicitud(`/api/admin/categorias/${id}/mover?direccion=${direccion}`, {
+    method: "PUT",
+  });
+}
+
 export function crearProducto(datos) {
   return solicitud("/api/admin/productos", {
     method: "POST",
@@ -53,6 +59,19 @@ export function actualizarProducto(id, datos) {
 
 export function eliminarProducto(id) {
   return solicitud(`/api/admin/productos/${id}`, { method: "DELETE" });
+}
+
+export function moverProducto(id, direccion) {
+  return solicitud(`/api/admin/productos/${id}/mover?direccion=${direccion}`, {
+    method: "PUT",
+  });
+}
+
+export function cambiarPassword(passwordActual, passwordNueva) {
+  return solicitud("/api/auth/password", {
+    method: "PUT",
+    body: JSON.stringify({ passwordActual, passwordNueva }),
+  });
 }
 
 export function subirImagen(archivo) {

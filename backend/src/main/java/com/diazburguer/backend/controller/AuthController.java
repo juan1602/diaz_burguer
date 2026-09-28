@@ -1,7 +1,10 @@
 package com.diazburguer.backend.controller;
 
+import com.diazburguer.backend.model.Usuario;
+import com.diazburguer.backend.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,13 +12,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
 
@@ -24,10 +30,18 @@ import java.util.Map;
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
+    private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
     private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 
-    public AuthController(AuthenticationManager authenticationManager) {
+    public AuthController(
+        AuthenticationManager authenticationManager,
+        UsuarioRepository usuarioRepository,
+        PasswordEncoder passwordEncoder
+    ) {
         this.authenticationManager = authenticationManager;
+        this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/login")
@@ -67,6 +81,34 @@ public class AuthController {
         return ResponseEntity.ok(Map.of("username", authentication.getName()));
     }
 
+    @PutMapping("/password")
+    public ResponseEntity<Void> cambiarPassword(
+        @RequestBody CambiarPasswordRequest datos,
+        Authentication authentication
+    ) {
+        Usuario usuario = usuarioRepository.findByUsername(authentication.getName())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+
+        if (!passwordEncoder.matches(datos.passwordActual(), usuario.getPasswordHash())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La contraseña actual no es correcta");
+        }
+
+        if (datos.passwordNueva() == null || datos.passwordNueva().length() < 6) {
+            throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "La nueva contraseña debe tener al menos 6 caracteres"
+            );
+        }
+
+        usuario.setPasswordHash(passwordEncoder.encode(datos.passwordNueva()));
+        usuarioRepository.save(usuario);
+
+        return ResponseEntity.noContent().build();
+    }
+
     public record LoginRequest(String username, String password) {
+    }
+
+    public record CambiarPasswordRequest(String passwordActual, String passwordNueva) {
     }
 }
