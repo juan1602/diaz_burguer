@@ -4,5 +4,8 @@
 export const API_URL = import.meta.env.VITE_API_URL ?? "";
 
 export function urlImagen(ruta) {
-  return ruta ? `${API_URL}${ruta}` : ruta;
+  if (!ruta) return ruta;
+  // Las fotos de Cloudinary ya son URLs completas (https://...);
+  // solo las rutas relativas antiguas necesitan la URL del backend.
+  return ruta.startsWith("http") ? ruta : `${API_URL}${ruta}`;
 }

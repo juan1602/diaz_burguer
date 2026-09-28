@@ -53,7 +53,6 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/error").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/menu").permitAll()
-                .requestMatchers(HttpMethod.GET, "/imagenes/**").permitAll()
                 .requestMatchers("/api/auth/login", "/api/auth/logout").permitAll()
                 .anyRequest().authenticated()
             );
