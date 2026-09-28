@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../config";
 
 export function AdminLogin() {
   const [usuario, setUsuario] = useState("");
@@ -14,7 +15,7 @@ export function AdminLogin() {
     setEnviando(true);
 
     try {
-      const respuesta = await fetch("/api/auth/login", {
+      const respuesta = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

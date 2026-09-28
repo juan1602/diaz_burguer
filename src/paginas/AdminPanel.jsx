@@ -6,6 +6,7 @@ import { FormularioCategoria } from "../components/admin/FormularioCategoria";
 import { FormularioProducto } from "../components/admin/FormularioProducto";
 import { formatPrecio } from "../utils/formatPrecio";
 import { obtenerIconoCategoria } from "../utils/categoriaIconos";
+import { API_URL, urlImagen } from "../config";
 import {
   crearCategoria,
   actualizarCategoria,
@@ -27,7 +28,7 @@ export function AdminPanel() {
   const categoriaActiva = categorias.find((c) => c.id === idCategoriaActiva);
 
   async function cerrarSesion() {
-    await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
+    await fetch(`${API_URL}/api/auth/logout`, { method: "POST", credentials: "include" });
     navegar("/admin/login");
   }
 
@@ -151,7 +152,7 @@ export function AdminPanel() {
                     >
                       {producto.imagenUrl ? (
                         <img
-                          src={producto.imagenUrl}
+                          src={urlImagen(producto.imagenUrl)}
                           alt={producto.nombre}
                           className="h-14 w-14 shrink-0 rounded-lg object-cover"
                         />

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { subirImagen } from "../../servicios/adminApi";
+import { urlImagen } from "../../config";
 
 export function FormularioProducto({
   producto,
@@ -128,7 +129,7 @@ export function FormularioProducto({
         <label className="mb-1 block text-sm text-gray-400">Foto</label>
         {imagenUrl && (
           <img
-            src={imagenUrl}
+            src={urlImagen(imagenUrl)}
             alt="Vista previa"
             className="mb-2 h-32 w-32 rounded-lg object-cover"
           />

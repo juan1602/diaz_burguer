@@ -3,6 +3,7 @@ import { CategoriaExplorador } from "./CategoriaExplorador";
 import { ProductoDetalle } from "./ProductoDetalle";
 import { formatPrecio } from "../utils/formatPrecio";
 import { obtenerIconoCategoria } from "../utils/categoriaIconos";
+import { urlImagen } from "../config";
 
 export function Menu({ categorias, cargando, error }) {
   const [idCategoriaSeleccionada, setIdCategoriaSeleccionada] = useState(null);
@@ -58,7 +59,7 @@ export function Menu({ categorias, cargando, error }) {
               >
                 {producto.imagenUrl ? (
                   <img
-                    src={producto.imagenUrl}
+                    src={urlImagen(producto.imagenUrl)}
                     alt={producto.nombre}
                     className="aspect-square w-full object-cover"
                   />

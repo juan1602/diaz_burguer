@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { API_URL } from "../config";
 
 export function useMenu() {
   const [categorias, setCategorias] = useState([]);
@@ -8,7 +9,7 @@ export function useMenu() {
   const cargar = useCallback(() => {
     setCargando(true);
     setError(null);
-    return fetch("/api/menu")
+    return fetch(`${API_URL}/api/menu`)
       .then((respuesta) => {
         if (!respuesta.ok) {
           throw new Error("No se pudo cargar el menú");

@@ -1,5 +1,6 @@
 import { formatPrecio } from "../utils/formatPrecio";
 import { obtenerIconoCategoria } from "../utils/categoriaIconos";
+import { urlImagen } from "../config";
 
 export function ProductoDetalle({ producto, categoriaNombre, onCerrar }) {
   return (
@@ -16,7 +17,7 @@ export function ProductoDetalle({ producto, categoriaNombre, onCerrar }) {
 
         {producto.imagenUrl ? (
           <img
-            src={producto.imagenUrl}
+            src={urlImagen(producto.imagenUrl)}
             alt={producto.nombre}
             className="aspect-square w-full object-cover"
           />

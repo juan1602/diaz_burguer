@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import { API_URL } from "../config";
 
 export function RutaProtegida({ children }) {
   const [estado, setEstado] = useState("verificando");
 
   useEffect(() => {
-    fetch("/api/auth/me", { credentials: "include" })
+    fetch(`${API_URL}/api/auth/me`, { credentials: "include" })
       .then((respuesta) => setEstado(respuesta.ok ? "autenticado" : "no-autenticado"))
       .catch(() => setEstado("no-autenticado"));
   }, []);

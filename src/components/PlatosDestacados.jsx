@@ -1,5 +1,6 @@
 import { formatPrecio } from "../utils/formatPrecio";
 import { obtenerIconoCategoria } from "../utils/categoriaIconos";
+import { urlImagen } from "../config";
 
 export function PlatosDestacados({ categorias, cargando }) {
   const destacados = categorias.flatMap((categoria) =>
@@ -28,7 +29,7 @@ export function PlatosDestacados({ categorias, cargando }) {
           >
             {producto.imagenUrl ? (
               <img
-                src={producto.imagenUrl}
+                src={urlImagen(producto.imagenUrl)}
                 alt={producto.nombre}
                 className="aspect-video w-full object-cover"
               />

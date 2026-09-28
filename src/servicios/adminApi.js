@@ -1,5 +1,7 @@
-async function solicitud(url, opciones = {}) {
-  const respuesta = await fetch(url, {
+import { API_URL } from "../config";
+
+async function solicitud(ruta, opciones = {}) {
+  const respuesta = await fetch(`${API_URL}${ruta}`, {
     credentials: "include",
     headers: opciones.body instanceof FormData ? undefined : { "Content-Type": "application/json" },
     ...opciones,
