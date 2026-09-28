@@ -70,6 +70,11 @@ export function Menu({ categorias, cargando, error }) {
                 )}
                 <div className="p-3">
                   <p className="font-semibold text-white">{producto.nombre}</p>
+                  {producto.descripcion && (
+                    <p className="mt-1 line-clamp-2 text-xs text-gray-400">
+                      {producto.descripcion}
+                    </p>
+                  )}
                   <p className="mt-1 font-bold text-rojo">
                     {formatPrecio(producto.precio)}
                   </p>
