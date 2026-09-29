@@ -57,7 +57,7 @@ npm install
 npm run dev
 ```
 
-Levanta en `http://localhost:5173`. El proxy de Vite redirige `/api` e `/imagenes` al backend local en el puerto 8090, así que en desarrollo no hace falta configurar `VITE_API_URL`.
+Levanta en `http://localhost:5173`. El proxy de Vite redirige `/api` e `/imagenes` al backend local en el puerto 8090.
 
 ### Backend
 
@@ -93,11 +93,7 @@ Sin las credenciales de Cloudinary configuradas, la subida de fotos desde el pan
 
 ### Frontend
 
-| Variable | Uso | Valor local por defecto |
-|---|---|---|
-| `VITE_API_URL` | URL completa del backend | *(vacío → usa rutas relativas vía proxy de Vite)* |
-
-En producción está configurada en Vercel apuntando al backend de Railway.
+El frontend no necesita variables de entorno. Siempre llama al backend con rutas relativas (`/api/...`): en local las reenvía el proxy de Vite y en producción las reenvía Vercel a Railway (reglas en `vercel.json`). Así la cookie de sesión queda en el mismo dominio de la página y los celulares no la bloquean como cookie de terceros.
 
 ## Fases del proyecto
 
