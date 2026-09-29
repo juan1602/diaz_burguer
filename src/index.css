@@ -12,6 +12,8 @@
   --font-display: "Bebas Neue", sans-serif;
   --font-sans: "Archivo", system-ui, sans-serif;
   --font-marcador: "Permanent Marker", cursive;
+  /* La más parecida a la letra del letrero/logo del local. */
+  --font-letrero: "Barlow Condensed", sans-serif;
 
   /* Cinta de texto que se desplaza sin fin: el contenido va duplicado,
      así que al mover -50% queda exactamente donde empezó. */
