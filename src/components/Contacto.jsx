@@ -8,7 +8,8 @@ const urlMapa = `https://www.google.com/maps/search/?api=1&query=${consultaMapa}
 export function Contacto() {
   return (
     <section
-      className="border-t border-negro-borde bg-negro-suave px-4 py-14 text-center"
+      id="contacto"
+      className="scroll-mt-20 border-t border-negro-borde bg-negro-suave px-4 py-14 text-center"
       aria-label="Contacto y ubicación"
     >
       <h2 className="font-display text-3xl tracking-wide text-rojo uppercase">
