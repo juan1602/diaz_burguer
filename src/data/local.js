@@ -9,4 +9,6 @@ export const local = {
   horario: "Todos los días, 5:00 p. m. a 11:00 p. m.",
   whatsapp: "573170923238",
   instagram: "diazburguers25",
+  // Dirección pública de la página (la usa el QR del menú en PDF).
+  sitioWeb: "https://diaz-burguer-eight.vercel.app",
 };
