@@ -1,0 +1,21 @@
+# Visita el backend cada 10 minutos en el horario del restaurante para que
+# Render (plan gratis) no lo apague. Reemplaza a cron-job.org, que no esperaba
+# a que Render despertara y recibía su página de "despertando" en vez del "ok".
+#
+# GitHub usa hora UTC: 3:00 p. m. a 11:50 p. m. de Colombia (UTC-5)
+# es de 20:00 a 04:50 UTC.
+name: Despertar backend
+
+on:
+  schedule:
+    - cron: "*/10 20-23,0-4 * * *"
+  workflow_dispatch: # botón para correrlo a mano desde la pestaña Actions
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Visitar /api/ping
+        # Espera hasta 3 minutos: si Render estaba dormido, tarda en prender.
+        run: curl --fail --silent --show-error --max-time 180 https://diaz-burguer-backend.onrender.com/api/ping
